@@ -78,7 +78,7 @@
     
             <div class="mb-3">
                 <label for="grades" class="form-label">Grades (comma-separated):</label>
-                <textarea class="form-control formatted-textarea" id="grades" rows="4" required></textarea>
+                <textarea class="form-control grades-textarea" id="grades" rows="4" required></textarea>
             </div>
     
             <button type="button" class="btn btn-primary" onclick="generateCodes()">Generate Codes</button>
@@ -111,10 +111,38 @@
             textarea.addEventListener('paste', formatDataWithCommas);
           });
         });
-      </script>
-      
-      
+        document.addEventListener('DOMContentLoaded', function () {
+            function formatGradesWithCommas(event) {
+                var clipboardData = event.clipboardData || window.clipboardData;
+                var pastedData = clipboardData.getData('text');
 
+                // Replace newlines with commas and remove extra spaces
+                var formattedData = pastedData.replace(/\n/g, ',').replace(/\s+/g, ' ').trim();
+
+                // Split the formatted data into an array of unique grades
+                var gradesArray = formattedData.split(',');
+                var uniqueGrades = [];
+
+                gradesArray.forEach(function (grade) {
+                    // Regular expression to match decimal numbers up to 2 decimal places
+                    var decimalPattern = /^\d+(\.\d{1,2})?$/;
+                    if (decimalPattern.test(grade.trim())) {
+                        uniqueGrades.push(parseFloat(grade.trim()).toFixed(2));
+                    }
+                });
+
+                // Join the unique grades with commas and set the value back to the textarea
+                event.target.value = uniqueGrades.join(', ');
+
+                // Prevent the default paste behavior
+                event.preventDefault();
+            }
+
+            // Attach the formatGradesWithCommas function to the paste event for the grades textarea
+            var gradesTextarea = document.getElementById('grades');
+            gradesTextarea.addEventListener('paste', formatGradesWithCommas);
+        });
+    </script>
     <script src="https://www.gstatic.com/firebasejs/8.9.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.9.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.9.0/firebase-firestore.js"></script>
