@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRMS | Add Result</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+         .sidenav {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #f8f9fa;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="sidenav">
+        <!-- Logo -->
+        <div class="logo text-center mb-4">
+            <img src="assets/logo.svg" alt="Logo" class="img-fluid" style="max-width: 80px;">
+        </div>
+    
+        <!-- Navigation links with icons -->
+        <a href="teacher_dashboard.html" class="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="add_result.html" class="add-result"><i class="fas fa-plus"></i> Add Result</a>
+        <button class="btn btn-danger mt-3" style="margin-left: 30px;" onclick="teacherLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <!-- <button class="btn btn-primary mt-3" style="margin-left: 30px;"><i class="fas fa-plus"></i> Add Result</button> -->
+    </div>
+
+    <div class="container mt-5 shadow p-3 mb-5 bg-white rounded">
+        <form id="dataEntryForm">
+            <div class="mb-3">
+                <label for="classSection" class="form-label">Class Name - Grade/Section:</label>
+                <input type="text" class="form-control" id="classSection" placeholder="e.g BSCS-4A, BSCS-3A, BSCS-2A" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="subject" class="form-label">Subject:</label>
+                <input type="text" class="form-control" id="subject" placeholder="e.g Robotics, DSA, Networking" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="semestralNumber" class="form-label">Semestral Number:</label>
+                <input type="text" class="form-control" id="semestralNumber" placeholder="e.g 1st, 2nd, 3rd" required>
+            </div>
+    
+            <div class="mb-3">
+                <label for="studentNames" class="form-label">Student Names (comma-separated):</label>
+                <textarea class="form-control formatted-textarea" id="studentNames" rows="4" required></textarea>
+            </div>
+    
+            <div class="mb-3">
+                <label for="studentEmails" class="form-label">Emails (comma-separated):</label>
+                <textarea class="form-control formatted-textarea" id="studentEmails" rows="4" required></textarea>
+            </div>
+    
+            <div class="mb-3">
+                <label for="grades" class="form-label">Grades (comma-separated):</label>
+                <textarea class="form-control formatted-textarea" id="grades" rows="4" required></textarea>
+            </div>
+    
+            <button type="button" class="btn btn-primary" onclick="generateCodes()">Generate Codes</button>
+        </form>
+        <div id="generatedCodes"></div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          function formatDataWithCommas(event) {
+            var clipboardData = event.clipboardData || window.clipboardData;
+            var pastedData = clipboardData.getData('text');
+      
+            // Replace newlines with commas and remove extra spaces
+            var formattedData = pastedData.replace(/\n/g, ',').replace(/\s+/g, ' ').trim();
+      
+            // Split the formatted data into an array of unique names
+            var uniqueNames = Array.from(new Set(formattedData.split(',')));
+      
+            // Join the unique names with commas and set the value back to the textarea
+            event.target.value = uniqueNames.join(', ');
+            
+            // Prevent the default paste behavior
+            event.preventDefault();
+          }
+      
+          // Attach the formatDataWithCommas function to the paste event for each textarea
+          var textareas = document.querySelectorAll('.formatted-textarea');
+          textareas.forEach(function (textarea) {
+            textarea.addEventListener('paste', formatDataWithCommas);
+          });
+        });
+      </script>
+      
+      
+
+    <script src="https://www.gstatic.com/firebasejs/8.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.0/firebase-firestore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
